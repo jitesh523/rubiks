@@ -1,0 +1,4 @@
+opencv-python>=4.8.0
+kociemba>=1.2.1
+numpy>=1.21.0
+pyttsx3>=2.90
