@@ -61,6 +61,17 @@ Thumbs.db
 *.mp4
 *.avi
 
+# Machine Learning Models (too large for git)
+*.pkl
+*.joblib
+*.h5
+*.model
+
+# Training Data & Scans
+cube_scan_*.json
+*_samples.pkl
+calibration_*.json
+
 # Project specific
 test_images/
 calibration_images/
