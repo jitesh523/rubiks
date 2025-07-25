@@ -54,8 +54,10 @@ class CompleteCubeScanner:
         # Face detection state
         self.faces = {}
         self.current_face = 0
-        self.face_names = ["Front", "Right", "Back", "Left", "Top", "Bottom"]
-        self.face_colors = ["🔴", "🟠", "⬜", "🟡", "🟢", "🔵"]
+        # Use Kociemba notation for face names: U=Up, R=Right, F=Front, D=Down, L=Left, B=Back
+        self.face_names = ["U", "R", "F", "D", "L", "B"]
+        self.face_display_names = ["Up (Top)", "Right", "Front", "Down (Bottom)", "Left", "Back"]
+        self.face_colors = ["⬜", "🔴", "🟢", "🟡", "🟠", "🔵"]
         
         # Detection stability
         self.recent_detections = []
@@ -225,15 +227,22 @@ class CompleteCubeScanner:
         
         # Count unknowns
         unknown_count = flat_colors.count("?")
-        if unknown_count > 2:
+        
+        # Be more lenient - allow faces with some unknowns for easier scanning
+        if unknown_count >= 7:  # Only reject if most cells are unknown
             return False, f"Too many unknowns: {unknown_count}/9"
         
         # Check for reasonable distribution
         color_counts = Counter(flat_colors)
+        known_colors = {k: v for k, v in color_counts.items() if k != "?"}
         
-        # A valid face should have at least 2 different colors (except in special cases)
-        if len(color_counts) == 1 and "?" not in color_counts:
-            return False, "Face appears monochrome"
+        # Must have at least one known color
+        if not known_colors:
+            return False, "No colors detected"
+        
+        # A completely monochrome face is suspicious (but could be valid)
+        if len(known_colors) == 1 and unknown_count == 0:
+            return True, f"Monochrome {list(known_colors.keys())[0]} face - proceed with caution"
         
         return True, "Face looks valid"
     
@@ -298,9 +307,10 @@ class CompleteCubeScanner:
         
         # Current face info
         face_name = self.face_names[self.current_face]
+        face_display = self.face_display_names[self.current_face]
         face_emoji = self.face_colors[self.current_face]
         
-        status_text = f"Scanning: {face_emoji} {face_name} Face ({self.current_face + 1}/6)"
+        status_text = f"Scanning: {face_emoji} {face_display} ({face_name}) ({self.current_face + 1}/6)"
         cv2.putText(frame, status_text, (20, 30), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
         
@@ -472,6 +482,152 @@ class CompleteCubeScanner:
             flat_colors = [color for row in colors for color in row]
             color_counts = Counter(flat_colors)
             print(f"  {face_name:8}: {dict(color_counts)}")
+    
+    def scan_all_faces(self):
+        """Main interface method expected by main.py - runs interactive scanner and returns face data"""
+        print("\n🎯 Starting complete cube scan...")
+        print("Instructions:")
+        print("  - SPACEBAR: Capture current face")
+        print("  - N/P: Navigate between faces")
+        print("  - R: Reset current face")
+        print("  - Q: Quit scanner")
+        print("\nPlease scan all 6 faces in order: U, R, F, D, L, B")
+        
+        # Run the interactive scanner
+        self.run_scanner()
+        
+        # Check if all faces were captured
+        if len(self.faces) != 6:
+            print(f"\n⚠️ Warning: Only {len(self.faces)}/6 faces were captured")
+            return None
+        
+        # Convert to ordered list format expected by main.py
+        # Order: U, R, F, D, L, B (Up, Right, Front, Down, Left, Back)
+        face_order = ['U', 'R', 'F', 'D', 'L', 'B']
+        face_colors = []
+        
+        for face_name in face_order:
+            if face_name in self.faces:
+                colors_2d = self.faces[face_name]['colors']
+                # Flatten the 3x3 grid to a 9-element list
+                flat_colors = [color for row in colors_2d for color in row]
+                face_colors.append(flat_colors)
+            else:
+                print(f"❌ Missing face: {face_name}")
+                return None
+        
+        print(f"\n✅ Successfully scanned all 6 faces!")
+        return face_colors
+    
+    def attempt_color_correction(self, face_colors):
+        """Attempt to correct missing or unknown colors based on cube logic"""
+        print("\n🔧 Attempting color correction...")
+        
+        # Color mapping for center positions
+        center_positions = [4, 13, 22, 31, 40, 49]  # Center of each face in flattened format
+        face_names = ['U', 'R', 'F', 'D', 'L', 'B']
+        
+        # Try to identify face centers first
+        corrected_faces = []
+        for face_idx, face in enumerate(face_colors):
+            corrected_face = face.copy()
+            
+            # Count detected colors on this face
+            from collections import Counter
+            color_counts = Counter(face)
+            unknown_count = color_counts.get('?', 0)
+            
+            if unknown_count > 0:
+                print(f"  Face {face_names[face_idx]}: {unknown_count} unknown cells")
+                
+                # Find the most common non-unknown color (likely the face color)
+                known_colors = {k: v for k, v in color_counts.items() if k != '?'}
+                if known_colors:
+                    most_common_color = max(known_colors, key=known_colors.get)
+                    
+                    # Replace unknown colors with the most common color
+                    for i, color in enumerate(corrected_face):
+                        if color == '?':
+                            corrected_face[i] = most_common_color
+                            print(f"    Cell {i}: ? → {most_common_color}")
+            
+            corrected_faces.append(corrected_face)
+        
+        return corrected_faces
+    
+    def convert_to_kociemba_format(self, face_colors):
+        """Convert detected color names to Kociemba format string"""
+        if not face_colors or len(face_colors) != 6:
+            return None
+        
+        # Check for unknown colors and attempt correction
+        needs_correction = False
+        for face in face_colors:
+            if '?' in face:
+                needs_correction = True
+                break
+        
+        if needs_correction:
+            face_colors = self.attempt_color_correction(face_colors)
+        
+        # Color mapping: color name -> Kociemba letter
+        color_map = {
+            'white': 'U',   # Up face center
+            'red': 'R',     # Right face center
+            'green': 'F',   # Front face center
+            'yellow': 'D',  # Down face center
+            'orange': 'L',  # Left face center
+            'blue': 'B'     # Back face center
+        }
+        
+        # Build the 54-character Kociemba string
+        # Order: U face (9), R face (9), F face (9), D face (9), L face (9), B face (9)
+        kociemba_string = ""
+        
+        for face_idx, face in enumerate(face_colors):
+            for color in face:
+                if color.lower() in color_map:
+                    kociemba_string += color_map[color.lower()]
+                else:
+                    print(f"❌ Unknown color detected: {color}")
+                    return None
+        
+        return kociemba_string
+    
+    def validate_cube(self, cube_string):
+        """Validate the cube string follows Rubik's cube rules"""
+        if not cube_string or len(cube_string) != 54:
+            return False, f"Invalid length: {len(cube_string) if cube_string else 0}, expected 54"
+        
+        # Count each color
+        color_counts = Counter(cube_string)
+        expected_colors = {'U', 'R', 'F', 'D', 'L', 'B'}
+        
+        # Check if we have exactly the expected colors
+        if set(color_counts.keys()) != expected_colors:
+            return False, f"Invalid colors found: {set(color_counts.keys())}"
+        
+        # Each color should appear exactly 9 times
+        for color in expected_colors:
+            if color_counts[color] != 9:
+                return False, f"Color {color} appears {color_counts[color]} times, expected 9"
+        
+        # Check center squares (positions 4, 13, 22, 31, 40, 49 in 0-based indexing)
+        # Centers should match their face designation
+        centers = {
+            cube_string[4]: 'U',   # Up face center
+            cube_string[13]: 'R',  # Right face center  
+            cube_string[22]: 'F',  # Front face center
+            cube_string[31]: 'D',  # Down face center
+            cube_string[40]: 'L',  # Left face center
+            cube_string[49]: 'B'   # Back face center
+        }
+        
+        expected_centers = {'U', 'R', 'F', 'D', 'L', 'B'}
+        if set(centers.keys()) != expected_centers:
+            return False, f"Invalid center configuration: {centers}"
+        
+        return True, "Cube validation passed"
 
 
 if __name__ == "__main__":

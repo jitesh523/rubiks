@@ -13,8 +13,8 @@ Author: AI Assistant
 
 import sys
 import os
-from cube_scanner import CubeScanner
-from cube_solver import CubeSolver
+from complete_cube_scanner import CompleteCubeScanner
+from enhanced_cube_solver import EnhancedCubeSolver
 from move_tracker import MoveTracker
 
 def print_banner():
@@ -104,7 +104,7 @@ def test_with_solved_cube():
     print("\n🧪 Testing with solved cube...")
     solved_cube = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
     
-    solver = CubeSolver()
+    solver = EnhancedCubeSolver()
     success, result = solver.solve_cube(solved_cube)
     
     if success:
@@ -121,8 +121,8 @@ def scan_and_solve_cube():
     print("\n🎲 Starting Cube Scanner...")
     
     # Initialize components
-    scanner = CubeScanner()
-    solver = CubeSolver()
+    scanner = CompleteCubeScanner()
+    solver = EnhancedCubeSolver()
     
     # Scan all faces
     print("📸 Scanning cube faces...")
@@ -134,15 +134,62 @@ def scan_and_solve_cube():
     
     # Convert to solver format
     cube_string = scanner.convert_to_kociemba_format(cube_faces)
+    
+    if cube_string is None:
+        print("❌ Failed to convert cube faces to solver format (unknown colors detected).")
+        return False
+    
     print(f"\n🔍 Scanned cube state:")
     print(f"Raw data: {cube_string}")
     
-    # Validate cube
+    # Add detailed color count validation
+    from collections import Counter
+    print("\n🧮 Color distribution analysis:")
+    color_counts = Counter(cube_string)
+    total_detected = sum(color_counts.values())
+    print(f"Total stickers detected: {total_detected}/54")
+    
+    # Check each color count
+    expected_colors = {'U': 'White', 'R': 'Red', 'F': 'Green', 'D': 'Yellow', 'L': 'Orange', 'B': 'Blue'}
+    invalid_counts = []
+    
+    for color_code, color_name in expected_colors.items():
+        count = color_counts.get(color_code, 0)
+        status = "✅" if count == 9 else "❌"
+        print(f"  {status} {color_name} ({color_code}): {count}/9")
+        if count != 9:
+            invalid_counts.append((color_name, color_code, count))
+    
+    # If we have invalid color counts, provide detailed feedback
+    if invalid_counts:
+        print(f"\n❌ Invalid color distribution detected:")
+        for color_name, color_code, count in invalid_counts:
+            if count < 9:
+                missing = 9 - count
+                print(f"  • {color_name} ({color_code}): Missing {missing} sticker(s)")
+            elif count > 9:
+                extra = count - 9
+                print(f"  • {color_name} ({color_code}): {extra} extra sticker(s)")
+        
+        print("\n💡 Possible solutions:")
+        print("1. 🔄 Rescan with better lighting")
+        print("2. 🔍 Check for reflections or shadows")
+        print("3. 🧹 Clean cube faces")
+        print("4. 📝 Use manual entry (option 2) to correct the cube state")
+        
+        # Ask if user wants to continue anyway
+        retry = input("\nWould you like to try again? (y/n): ").strip().lower()
+        if retry == 'y':
+            return scan_and_solve_cube()  # Recursive retry
+        else:
+            return False
+    
+    # Standard cube validation
     is_valid, validation_message = scanner.validate_cube(cube_string)
-    print(f"Validation: {validation_message}")
+    print(f"\n🔍 Cube structure validation: {validation_message}")
     
     if not is_valid:
-        print("❌ Invalid cube state detected. Please try scanning again.")
+        print("❌ Invalid cube structure detected. Please try scanning again.")
         return False
     
     # Solve cube
@@ -213,7 +260,7 @@ def main():
         elif choice == '2':
             cube_string = manual_cube_entry()
             if cube_string:
-                solver = CubeSolver()
+                solver = EnhancedCubeSolver()
                 success, result = solver.solve_cube(cube_string)
                 
                 if success:
