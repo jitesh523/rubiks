@@ -21,6 +21,7 @@ import os
 from typing import Dict, List, Tuple, Optional
 from collections import Counter
 import time
+from cube_visualizer import CubeVisualizer
 
 class CompleteCubeScanner:
     def __init__(self):
@@ -62,7 +63,11 @@ class CompleteCubeScanner:
         # Detection stability
         self.recent_detections = []
         self.stability_frames = 10
+        self.stability_frames = 10
         self.min_confidence = 0.35
+        
+        # 3D Visualizer
+        self.visualizer = CubeVisualizer(size=400)
         
     def get_hue_value(self, bgr_pixel: np.ndarray) -> float:
         """Extract hue value from BGR pixel"""
@@ -336,6 +341,33 @@ class CompleteCubeScanner:
         cv2.putText(frame, "Enhanced Red/Orange Detection Active", (w - 350, 30), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 165, 255), 1)
     
+    def show_transition_animation(self, from_face, to_face):
+        """Show 3D animation transitioning between faces"""
+        print(f"🎬 Animating transition: {from_face} -> {to_face}")
+        
+        frames = self.visualizer.animate_transition(from_face, to_face)
+        
+        for frame in frames:
+            # Create a composite frame (animation centered on black background)
+            display_frame = np.zeros((600, 800, 3), dtype=np.uint8)
+            
+            # Center the animation
+            h, w = frame.shape[:2]
+            y_offset = (600 - h) // 2
+            x_offset = (800 - w) // 2
+            
+            display_frame[y_offset:y_offset+h, x_offset:x_offset+w] = frame
+            
+            # Add instructions
+            cv2.putText(display_frame, f"Move to {self.face_display_names[self.face_names.index(to_face)]} Face", 
+                       (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
+            
+            cv2.imshow("Complete Cube Scanner", display_frame)
+            cv2.waitKey(30)
+            
+        # Hold final frame briefly
+        time.sleep(0.5)
+
     def run_scanner(self):
         """Run the complete cube scanning interface"""
         print("🎯 Complete Rubik's Cube Scanner")
@@ -419,8 +451,12 @@ class CompleteCubeScanner:
                     
                     # Auto-advance to next face
                     if self.current_face < 5:
+                        old_face = self.face_names[self.current_face]
                         self.current_face += 1
-                        print(f"🔄 Moved to {self.face_names[self.current_face]} face")
+                        new_face = self.face_names[self.current_face]
+                        
+                        print(f"🔄 Moved to {new_face} face")
+                        self.show_transition_animation(old_face, new_face)
                     else:
                         print("🎉 All faces captured! Press Q to quit.")
                 else:
@@ -433,14 +469,20 @@ class CompleteCubeScanner:
                     print(f"🗑️ Reset {face_name} face")
             
             elif key == ord('n') or key == ord('N'):  # Next face
+                old_face = self.face_names[self.current_face]
                 self.current_face = (self.current_face + 1) % 6
-                face_name = self.face_names[self.current_face]
-                print(f"➡️ Switched to {face_name} face")
+                new_face = self.face_names[self.current_face]
+                
+                print(f"➡️ Switched to {new_face} face")
+                self.show_transition_animation(old_face, new_face)
             
             elif key == ord('p') or key == ord('P'):  # Previous face
+                old_face = self.face_names[self.current_face]
                 self.current_face = (self.current_face - 1) % 6
-                face_name = self.face_names[self.current_face]
-                print(f"⬅️ Switched to {face_name} face")
+                new_face = self.face_names[self.current_face]
+                
+                print(f"⬅️ Switched to {new_face} face")
+                self.show_transition_animation(old_face, new_face)
             
             elif key == ord('q') or key == ord('Q'):  # Quit
                 break
