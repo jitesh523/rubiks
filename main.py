@@ -37,7 +37,8 @@ def print_menu():
     print("2. 🔤 Enter Cube Manually")  
     print("3. 🧪 Test with Solved Cube")
     print("4. ℹ️  Show Instructions")
-    print("5. 🚪 Exit")
+    print("5. 🔧 Run Diagnostics")
+    print("6. 🚪 Exit")
     print("-" * 30)
 
 def show_instructions():
@@ -282,12 +283,22 @@ def main():
             show_instructions()
             
         elif choice == '5':
+            # Run diagnostics
+            try:
+                import diagnose
+                diagnose.main()
+            except ImportError:
+                print("❌ Error: diagnose.py not found.")
+            except Exception as e:
+                print(f"❌ Error running diagnostics: {e}")
+            
+        elif choice == '6':
             print("\n👋 Thanks for using the Rubik's Cube Solver!")
             print("Happy cubing! 🎲")
             break
             
         else:
-            print("❌ Invalid choice. Please select 1-5.")
+            print("❌ Invalid choice. Please select 1-6.")
         
         # Wait for user before showing menu again
         input("\nPress Enter to continue...")

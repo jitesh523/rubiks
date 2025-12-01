@@ -38,16 +38,27 @@ class MoveTracker:
             except:
                 print(f"TTS Error - Text: {text}")
     
-    def display_move_instruction(self, move, current_step, total_steps):
+        # Instructions
+        cv2.putText(canvas, "Press SPACE when move is complete", (100, 320), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.7, blue, 2)
+        cv2.putText(canvas, "Press 'r' to repeat instruction", (100, 350), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.7, blue, 2)
+        cv2.putText(canvas, "Press 'q' to quit", (100, 380), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.7, blue, 2)
+                   
+        return canvas
+
+    def display_move_instruction(self, move, next_move, current_step, total_steps):
         """Display visual instruction for a move"""
         # Create a black canvas
-        canvas = np.zeros((400, 800, 3), dtype=np.uint8)
+        canvas = np.zeros((450, 800, 3), dtype=np.uint8)
         
         # Colors
         white = (255, 255, 255)
         green = (0, 255, 0)
         blue = (255, 0, 0)
         yellow = (0, 255, 255)
+        gray = (150, 150, 150)
         
         # Title
         title = f"Step {current_step} of {total_steps}"
@@ -69,6 +80,11 @@ class MoveTracker:
         # Move instruction
         move_text = f"Move: {move}"
         cv2.putText(canvas, move_text, (100, 150), cv2.FONT_HERSHEY_SIMPLEX, 1.5, yellow, 3)
+        
+        # Next move preview
+        if next_move:
+            next_text = f"Next: {next_move}"
+            cv2.putText(canvas, next_text, (500, 150), cv2.FONT_HERSHEY_SIMPLEX, 1.0, gray, 2)
         
         # Move explanation
         explanations = {
@@ -96,17 +112,17 @@ class MoveTracker:
         
         # Split explanation into multiple lines if needed
         lines = [explanation]
-        y_pos = 200
+        y_pos = 220
         for line in lines:
             cv2.putText(canvas, line, (100, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 0.8, white, 2)
             y_pos += 40
         
         # Instructions
-        cv2.putText(canvas, "Press SPACE when move is complete", (100, 320), 
+        cv2.putText(canvas, "Press SPACE when move is complete", (100, 350), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, blue, 2)
-        cv2.putText(canvas, "Press 'r' to repeat instruction", (100, 350), 
+        cv2.putText(canvas, "Press 'r' to repeat instruction", (100, 380), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, blue, 2)
-        cv2.putText(canvas, "Press 'q' to quit", (100, 380), 
+        cv2.putText(canvas, "Press 'q' to quit", (100, 410), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, blue, 2)
         
         return canvas
@@ -130,8 +146,12 @@ class MoveTracker:
             
             current, total, percentage = solver.get_progress()
             
+            # Get next move for preview
+            remaining = solver.get_remaining_moves()
+            next_move = remaining[1] if len(remaining) > 1 else None
+            
             # Create visual instruction
-            instruction_canvas = self.display_move_instruction(current_move, current + 1, total)
+            instruction_canvas = self.display_move_instruction(current_move, next_move, current + 1, total)
             
             # Speak the move
             move_speech = self.get_move_speech(current_move)

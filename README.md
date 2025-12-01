@@ -29,7 +29,7 @@ A complete AI-powered Rubik's Cube solver that uses computer vision to scan the 
 - 📈 **Progress visualization** - Real-time stability and progress bars
 - 🎵 **Voice guidance** - Complete audio walkthrough
 - 🧪 **Multiple scanning modes** - Manual, auto-capture, and test modes
-- 🔧 **Diagnostic tools** - Built-in troubleshooting utilities
+- 🔧 **Diagnostic tools** - Built-in troubleshooting utilities (Option 5 in menu)
 
 ## 🚀 Quick Start
 
@@ -47,21 +47,17 @@ A complete AI-powered Rubik's Cube solver that uses computer vision to scan the 
    cd rubiks
    ```
 
-2. **Create virtual environment:**
+3. **Run the application:**
+   
+   We've included a helper script to set up the environment and run the app automatically:
+   
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On macOS/Linux
-   # or
-   venv\\Scripts\\activate     # On Windows
+   ./start.sh
    ```
-
-3. **Install dependencies:**
+   
+   Or manually:
    ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the application:**
-   ```bash
+   source venv/bin/activate
    python main.py
    ```
 

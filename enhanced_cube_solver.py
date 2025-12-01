@@ -27,30 +27,55 @@ class EnhancedCubeSolver:
             'B2': "Turn Back face 180 degrees"
         }
     
-    def solve_cube(self, cube_string):
+    def solve_cube(self, cube_input):
         """Solve the cube using enhanced solver with validation"""
         try:
             print("🔄 Solving cube with enhanced solver...")
-            print(f"Cube state: {cube_string}")
             
-            # First validate the cube state using enhanced validation
-            is_valid, validation_message = validate_cube_state(cube_string)
-            if not is_valid:
-                return False, f"Invalid cube state: {validation_message}"
-            
-            # Use enhanced solver
-            success, result = solve_cube_string(cube_string)
-            
-            if not success:
-                return False, result  # result contains error message
-            
-            # Parse solution into individual moves
-            self.solution_moves = result.split() if result else []
+            if isinstance(cube_input, list):
+                # Handle list of faces (from scanner)
+                is_valid, validation_message = validate_cube_state(cube_input)
+                if not is_valid:
+                    return False, f"Invalid cube state: {validation_message}"
+                
+                # solve_cube_string returns (solution_list, error_message)
+                solution_moves, error = solve_cube_string(cube_input)
+                
+                if error:
+                    return False, error
+                
+                self.solution_moves = solution_moves
+                result_str = ' '.join(solution_moves)
+                
+            else:
+                # Handle string input (manual/test)
+                print(f"Cube state: {cube_input}")
+                if len(cube_input) != 54:
+                    return False, f"Invalid cube string length: {len(cube_input)}"
+                
+                # Check for invalid characters
+                valid_chars = set('URFDLB')
+                if not all(c in valid_chars for c in cube_input.upper()):
+                    return False, "Invalid characters in cube string"
+
+                # Check if already solved
+                solved_state = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
+                if cube_input == solved_state:
+                    self.solution_moves = []
+                    print("🎉 Cube is already solved!")
+                    return True, []
+
+                try:
+                    result_str = kociemba.solve(cube_input)
+                    self.solution_moves = result_str.split()
+                except Exception as e:
+                    return False, f"Kociemba solver error: {str(e)}"
+
             self.current_move_index = 0
             
             print(f"✅ Enhanced solution found!")
             print(f"Number of moves: {len(self.solution_moves)}")
-            print(f"Solution: {result}")
+            print(f"Solution: {result_str}")
             
             return True, self.solution_moves
             
