@@ -10,21 +10,22 @@ Enhanced version with:
 ✅ Improved accuracy with your specific cube colors
 """
 
-import cv2
-import numpy as np
-import time
-import threading
 import json
 import os
+import threading
+import time
 from collections import deque
+
+import cv2
+import numpy as np
+
 from enhanced_color_detector import (
-    detect_cube_face_colors,
-    get_display_color,
-    validate_face_colors,
-    stabilize_colors,
     color_ranges,
+    get_display_color,
+    stabilize_colors,
+    validate_face_colors,
 )
-from enhanced_solver import solve_cube_string, get_move_explanation
+from enhanced_solver import get_move_explanation, solve_cube_string
 
 
 class CalibratedLiveScanner:
@@ -67,7 +68,7 @@ class CalibratedLiveScanner:
     def load_calibration_info(self):
         """Load calibration information"""
         if os.path.exists("cube_calibration.json"):
-            with open("cube_calibration.json", "r") as f:
+            with open("cube_calibration.json") as f:
                 self.calibration = json.load(f)
             print("✅ Loaded calibration data")
         else:

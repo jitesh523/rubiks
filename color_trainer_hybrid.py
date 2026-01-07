@@ -4,10 +4,11 @@ Hybrid Color Trainer for Rubik's Cube Scanner
 Collects balanced LAB + HSV samples for each color with visual feedback
 """
 
+import os
+import pickle
+
 import cv2
 import numpy as np
-import pickle
-import os
 
 
 class HybridColorTrainer:

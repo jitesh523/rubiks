@@ -1,8 +1,8 @@
-import cv2
-import numpy as np
-import joblib
 import os
-from lab_classifier import predict_color
+
+import cv2
+import joblib
+import numpy as np
 
 
 class MLCubeScanner:

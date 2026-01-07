@@ -1,7 +1,7 @@
-import cv2
-import numpy as np
-import pickle
 import os
+import pickle
+
+import cv2
 
 # Initialize samples dictionary
 samples = {c: [] for c in ["white", "red", "green", "blue", "yellow", "orange"]}

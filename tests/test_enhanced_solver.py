@@ -2,13 +2,12 @@
 
 import pytest
 
-
 # Mark these tests as they require the enhanced_solver module
 pytest.importorskip("enhanced_solver")
 
 from enhanced_solver import (
-    solve_cube_string,
     get_move_explanation,
+    solve_cube_string,
     validate_cube_state,
 )
 

@@ -1,8 +1,8 @@
+import threading
+
 import cv2
 import numpy as np
-import time
 import pyttsx3
-import threading
 
 
 class MoveTracker:

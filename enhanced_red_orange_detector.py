@@ -13,13 +13,13 @@ Fixes the notorious red vs orange confusion using:
 Based on the curated guidance for fixing red/orange confusion.
 """
 
-import cv2
-import numpy as np
-import pickle
 import os
+import pickle
+
+import cv2
 import joblib
+import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
-from typing import Tuple, List, Dict, Optional
 
 
 class EnhancedRedOrangeDetector:
@@ -322,9 +322,9 @@ class EnhancedRedOrangeDetector:
 
                     # Color label
                     label = (
-                        f"🔴"
+                        "🔴"
                         if color == "red"
-                        else f"🟠" if color == "orange" else color[:1].upper()
+                        else "🟠" if color == "orange" else color[:1].upper()
                     )
                     label_y = cell_y - 20
                     cv2.putText(
@@ -397,7 +397,7 @@ def train_enhanced_model():
     red_orange_tests = 0
     red_orange_correct = 0
 
-    for i, (features, true_color) in enumerate(zip(X, y)):
+    for i, (features, true_color) in enumerate(zip(X, y, strict=False)):
         pred_color = knn.predict([features])[0]
         confidence = knn.predict_proba([features]).max()
 

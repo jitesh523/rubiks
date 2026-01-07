@@ -3,8 +3,8 @@
 Diagnostic tool to identify issues with the cube scanner
 """
 
+
 import cv2
-import sys
 
 
 def test_camera():

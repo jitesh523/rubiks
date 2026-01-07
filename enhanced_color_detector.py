@@ -1,8 +1,9 @@
-import cv2
-import numpy as np
 import json
 import os
 from collections import Counter
+
+import cv2
+import numpy as np
 
 
 # Load calibrated HSV color ranges from file
@@ -21,7 +22,7 @@ def load_color_ranges():
     calibration_file = "cube_calibration.json"
     if os.path.exists(calibration_file):
         try:
-            with open(calibration_file, "r") as f:
+            with open(calibration_file) as f:
                 calibration_data = json.load(f)
 
             # Use calibrated ranges if available

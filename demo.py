@@ -4,7 +4,6 @@ Demo script for Rubik's Cube Solver
 """
 
 from cube_solver import CubeSolver
-from move_tracker import MoveTracker
 
 
 def demo_solver():
@@ -24,7 +23,7 @@ def demo_solver():
     success, result = solver.solve_cube(scrambled_cube)
 
     if success:
-        print(f"✅ Solution found!")
+        print("✅ Solution found!")
         solver.display_solution_summary()
 
         print("\n🎯 Would you like to see step-by-step guidance?")
@@ -32,7 +31,7 @@ def demo_solver():
 
         # Show first few moves as demonstration
         if solver.solution_moves:
-            print(f"\nFirst 5 moves:")
+            print("\nFirst 5 moves:")
             for i, move in enumerate(solver.solution_moves[:5]):
                 explanation = solver.get_move_with_explanation(move)
                 print(f"{i+1}. {move} - {explanation}")

@@ -12,18 +12,19 @@ Dynamic real-time cube scanner with:
 📷 Bigger ROI - Large, clean scanning grid
 """
 
-import cv2
-import numpy as np
-import time
 import threading
+import time
 from collections import deque
+
+import cv2
+
 from enhanced_color_detector import (
     detect_cube_face_colors,
     get_display_color,
-    validate_face_colors,
     stabilize_colors,
+    validate_face_colors,
 )
-from enhanced_solver import solve_cube_string, get_move_explanation
+from enhanced_solver import get_move_explanation, solve_cube_string
 
 
 class LiveCubeScanner:

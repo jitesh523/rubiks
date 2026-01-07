@@ -14,11 +14,11 @@ Features:
 ✅ Guided collection process
 """
 
+import os
+import pickle
+
 import cv2
 import numpy as np
-import pickle
-import os
-from typing import Dict, List, Tuple
 
 
 class RedOrangeTrainer:
@@ -35,7 +35,7 @@ class RedOrangeTrainer:
             "orange": {"h": (10, 25), "s": (100, 255), "v": (50, 255)},
         }
 
-    def load_existing_samples(self) -> Dict:
+    def load_existing_samples(self) -> dict:
         """Load existing LAB samples or create new structure"""
         if os.path.exists(self.samples_file):
             try:
@@ -47,13 +47,13 @@ class RedOrangeTrainer:
         # Create default structure with all 6 colors
         return {"white": [], "red": [], "orange": [], "yellow": [], "green": [], "blue": []}
 
-    def analyze_pixel_hsv(self, bgr_pixel: np.ndarray) -> Tuple[int, int, int]:
+    def analyze_pixel_hsv(self, bgr_pixel: np.ndarray) -> tuple[int, int, int]:
         """Analyze HSV values of a pixel"""
         bgr_reshaped = bgr_pixel.reshape(1, 1, 3)
         hsv = cv2.cvtColor(bgr_reshaped, cv2.COLOR_BGR2HSV)[0, 0]
         return int(hsv[0]), int(hsv[1]), int(hsv[2])
 
-    def get_sample_quality(self, hsv: Tuple[int, int, int], color: str) -> str:
+    def get_sample_quality(self, hsv: tuple[int, int, int], color: str) -> str:
         """Assess the quality of a sample based on HSV values"""
         h, s, v = hsv
 
@@ -81,7 +81,7 @@ class RedOrangeTrainer:
         else:
             return "🔴 Poor"
 
-    def create_lab_hue_features(self, bgr_pixel: np.ndarray) -> List[float]:
+    def create_lab_hue_features(self, bgr_pixel: np.ndarray) -> list[float]:
         """Create LAB + Hue feature vector from BGR pixel"""
         # Convert to LAB
         bgr_reshaped = bgr_pixel.reshape(1, 1, 3)
@@ -313,7 +313,7 @@ class RedOrangeTrainer:
             print("\n🚀 Ready to train enhanced model!")
             print("   Run: python enhanced_red_orange_detector.py")
         else:
-            print(f"\n📝 Collect more samples:")
+            print("\n📝 Collect more samples:")
             if not red_ready:
                 needed = self.target_samples["red"] - len(self.samples.get("red", []))
                 print(f"   Red: need {needed} more")

@@ -14,13 +14,13 @@ This implementation combines multiple color detection approaches:
 Focus: Solving the red vs orange confusion problem
 """
 
+import json
+import time
+from collections import Counter
+
 import cv2
 import numpy as np
-import json
-import os
-from typing import Dict, List, Tuple, Optional
-from collections import Counter
-import time
+
 from cube_visualizer import CubeVisualizer
 
 
@@ -76,7 +76,7 @@ class CompleteCubeScanner:
         hsv = cv2.cvtColor(bgr_reshaped, cv2.COLOR_BGR2HSV)[0, 0]
         return float(hsv[0])
 
-    def detect_color_hsv(self, roi: np.ndarray) -> Tuple[str, float]:
+    def detect_color_hsv(self, roi: np.ndarray) -> tuple[str, float]:
         """Detect color using HSV range matching"""
         if roi.size == 0:
             return "?", 0.0
@@ -121,7 +121,7 @@ class CompleteCubeScanner:
 
     def apply_red_orange_hue_rule(
         self, color: str, confidence: float, roi: np.ndarray
-    ) -> Tuple[str, float, str]:
+    ) -> tuple[str, float, str]:
         """Apply hue-based rule to disambiguate red vs orange"""
         if color not in ["red", "orange"] or confidence < 0.2:
             return color, confidence, "base_detection"
@@ -144,7 +144,7 @@ class CompleteCubeScanner:
 
         return color, confidence, "hue_neutral"
 
-    def detect_single_cubelet(self, roi: np.ndarray) -> Tuple[str, float, Dict]:
+    def detect_single_cubelet(self, roi: np.ndarray) -> tuple[str, float, dict]:
         """Detect color of a single cubelet with enhanced red/orange handling"""
         if roi.size == 0:
             return "?", 0.0, {}
@@ -175,7 +175,7 @@ class CompleteCubeScanner:
 
     def detect_face_colors(
         self, roi: np.ndarray, cell_padding: int = 10
-    ) -> Tuple[List[List[str]], List[List[float]], List, Dict]:
+    ) -> tuple[list[list[str]], list[list[float]], list, dict]:
         """Detect 3x3 face colors with stability checking"""
         if roi is None or roi.size == 0:
             empty_grid = [["?" for _ in range(3)] for _ in range(3)]
@@ -231,7 +231,7 @@ class CompleteCubeScanner:
 
         return colors_grid, confidence_grid, uncertain_cells, debug_info
 
-    def validate_face(self, colors: List[List[str]]) -> Tuple[bool, str]:
+    def validate_face(self, colors: list[list[str]]) -> tuple[bool, str]:
         """Validate that a face has reasonable color distribution"""
         if not colors:
             return False, "Empty face"
@@ -263,12 +263,12 @@ class CompleteCubeScanner:
     def draw_face_overlay(
         self,
         frame: np.ndarray,
-        colors: List[List[str]],
-        confidences: List[List[float]],
+        colors: list[list[str]],
+        confidences: list[list[float]],
         start_x: int,
         start_y: int,
         grid_size: int,
-        uncertain_cells: List = None,
+        uncertain_cells: list = None,
     ):
         """Draw color detection overlay on the frame"""
         cell_size = grid_size // 3
@@ -651,7 +651,7 @@ class CompleteCubeScanner:
                 print(f"❌ Missing face: {face_name}")
                 return None
 
-        print(f"\n✅ Successfully scanned all 6 faces!")
+        print("\n✅ Successfully scanned all 6 faces!")
         return face_colors
 
     def attempt_color_correction(self, face_colors):

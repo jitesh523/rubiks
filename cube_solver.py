@@ -1,5 +1,5 @@
+
 import kociemba
-import time
 
 
 class CubeSolver:
@@ -43,7 +43,7 @@ class CubeSolver:
             self.solution_moves = solution.split() if solution else []
             self.current_move_index = 0
 
-            print(f"✅ Solution found!")
+            print("✅ Solution found!")
             print(f"Number of moves: {len(self.solution_moves)}")
             print(f"Solution: {solution}")
 

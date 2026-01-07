@@ -10,10 +10,11 @@ Features:
 ✅ Debug mode for fine-tuning
 """
 
-import cv2
-import numpy as np
 import json
 import os
+
+import cv2
+import numpy as np
 
 
 class ColorCalibrator:
@@ -268,7 +269,7 @@ class ColorCalibrator:
     def load_calibration(self, filename="cube_calibration.json"):
         """Load calibration from file"""
         if os.path.exists(filename):
-            with open(filename, "r") as f:
+            with open(filename) as f:
                 calibration_data = json.load(f)
 
             self.color_ranges = calibration_data.get("color_ranges", self.color_ranges)

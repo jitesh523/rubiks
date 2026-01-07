@@ -1,0 +1,16 @@
+{
+  "trained_at": "2026-01-07T18:05:21.162185",
+  "n_samples": 60,
+  "n_train": 48,
+  "n_test": 12,
+  "accuracy": 1.0,
+  "color_names": [
+    "white",
+    "red",
+    "green",
+    "yellow",
+    "orange",
+    "blue"
+  ],
+  "confidence_threshold": 0.7
+}

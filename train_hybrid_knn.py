@@ -1,11 +1,12 @@
-import pickle
-import numpy as np
 import os
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import cross_val_score, train_test_split
-from sklearn.metrics import classification_report, confusion_matrix
-from sklearn.preprocessing import StandardScaler
+import pickle
+
 import joblib
+import numpy as np
+from sklearn.metrics import classification_report
+from sklearn.model_selection import cross_val_score, train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import StandardScaler
 
 
 def load_and_prepare_data():

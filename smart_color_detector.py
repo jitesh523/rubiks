@@ -11,11 +11,11 @@ Enhanced color detection that:
 ✅ Debug visualization for tuning
 """
 
-import cv2
-import numpy as np
 import json
 import os
-from typing import Tuple, List, Dict, Optional
+
+import cv2
+import numpy as np
 
 
 class SmartColorDetector:
@@ -57,7 +57,7 @@ class SmartColorDetector:
         """Load calibrated HSV ranges"""
         if os.path.exists(self.calibration_file):
             try:
-                with open(self.calibration_file, "r") as f:
+                with open(self.calibration_file) as f:
                     data = json.load(f)
                 print("✅ Loaded calibrated HSV ranges")
                 return data.get("color_ranges", self.default_ranges)
@@ -161,7 +161,7 @@ class SmartColorDetector:
 
         return confidence
 
-    def detect_single_color(self, roi: np.ndarray) -> Tuple[str, float, Dict]:
+    def detect_single_color(self, roi: np.ndarray) -> tuple[str, float, dict]:
         """
         Detect color in ROI using smart matching
 
@@ -230,7 +230,7 @@ class SmartColorDetector:
 
         return best_color, best_confidence, debug_info
 
-    def fuzzy_fallback(self, hsv_roi: np.ndarray) -> Tuple[str, float]:
+    def fuzzy_fallback(self, hsv_roi: np.ndarray) -> tuple[str, float]:
         """
         Fallback method using pure HSV distance to avoid unknowns
         """
@@ -261,7 +261,7 @@ class SmartColorDetector:
 
     def detect_face_colors(
         self, roi: np.ndarray, cell_padding: int = 8
-    ) -> Tuple[List[List[str]], List[List[float]], bool]:
+    ) -> tuple[list[list[str]], list[list[float]], bool]:
         """
         Detect 3x3 grid of colors with smart detection
 
@@ -318,15 +318,15 @@ class SmartColorDetector:
 
         return colors_grid, confidence_grid, has_unknowns
 
-    def get_display_color(self, color_name: str) -> Tuple[int, int, int]:
+    def get_display_color(self, color_name: str) -> tuple[int, int, int]:
         """Get BGR color for display"""
         return self.display_colors.get(color_name, self.display_colors["?"])
 
     def draw_debug_overlay(
         self,
         frame: np.ndarray,
-        colors: List[List[str]],
-        confidences: List[List[float]],
+        colors: list[list[str]],
+        confidences: list[list[float]],
         start_x: int,
         start_y: int,
         grid_size: int,
@@ -384,7 +384,6 @@ def create_smart_detector(
 
 # Example usage and testing
 if __name__ == "__main__":
-    import time
 
     print("🧠 Smart Color Detector Test")
     detector = SmartColorDetector(debug=True)

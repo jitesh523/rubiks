@@ -1,6 +1,7 @@
+
 import kociemba
-import time
-from enhanced_solver import solve_cube_string, get_move_explanation, validate_cube_state
+
+from enhanced_solver import get_move_explanation, solve_cube_string, validate_cube_state
 
 
 class EnhancedCubeSolver:
@@ -74,7 +75,7 @@ class EnhancedCubeSolver:
 
             self.current_move_index = 0
 
-            print(f"✅ Enhanced solution found!")
+            print("✅ Enhanced solution found!")
             print(f"Number of moves: {len(self.solution_moves)}")
             print(f"Solution: {result_str}")
 

@@ -1,8 +1,9 @@
-import cv2
-import numpy as np
-import time
 import threading
+import time
 from collections import deque
+
+import cv2
+
 from color_detector import ColorDetector
 
 

@@ -1,5 +1,6 @@
-import kociemba
 from collections import Counter
+
+import kociemba
 
 
 def flatten_face(face):
@@ -20,7 +21,7 @@ def solve_cube_string(faces):
 
     # Create mapping from color to face letter
     expected_centers = ["white", "red", "green", "yellow", "orange", "blue"]
-    face_letters = dict(zip(expected_centers, face_order))
+    face_letters = dict(zip(expected_centers, face_order, strict=False))
 
     # Build cube string
     cube_str = ""

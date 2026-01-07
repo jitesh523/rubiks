@@ -1,10 +1,11 @@
-import pickle
-import numpy as np
 import os
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import cross_val_score
-from sklearn.metrics import classification_report
+import pickle
+
 import joblib
+import numpy as np
+from sklearn.metrics import classification_report
+from sklearn.model_selection import cross_val_score
+from sklearn.neighbors import KNeighborsClassifier
 
 
 def train_knn_classifier(n_neighbors=3):

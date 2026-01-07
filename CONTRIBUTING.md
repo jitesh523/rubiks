@@ -122,10 +122,10 @@ git commit --no-verify
 def solve_cube(self, cube_input: str | list) -> tuple[bool, list[str] | str]:
     """
     Solve a Rubik's cube from its current state.
-    
+
     Args:
         cube_input: Either a 54-char string or list of face arrays
-        
+
     Returns:
         Tuple of (success: bool, result: list of moves or error message)
     """
@@ -139,13 +139,13 @@ Use Google-style docstrings:
 ```python
 def get_move_explanation(move: str) -> str:
     """Get human-readable explanation of a move.
-    
+
     Args:
         move: Move notation (e.g., 'R', 'U\'', 'F2')
-        
+
     Returns:
         Human-readable explanation of the move
-        
+
     Examples:
         >>> get_move_explanation('R')
         'Turn Right face clockwise'
@@ -168,15 +168,15 @@ def get_move_explanation(move: str) -> str:
 ```python
 class TestFeatureName:
     """Test suite for FeatureName."""
-    
+
     def test_basic_functionality(self):
         """Test that basic feature works."""
         # Arrange
         solver = EnhancedCubeSolver()
-        
+
         # Act
         result = solver.solve_cube("...")
-        
+
         # Assert
         assert result is not None
 ```

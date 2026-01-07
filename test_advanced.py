@@ -29,7 +29,7 @@ def test_single_face():
         face_data = scanner.scan_face_advanced()
 
         if face_data:
-            print(f"✅ SUCCESS! Detected colors:")
+            print("✅ SUCCESS! Detected colors:")
             for i, row in enumerate(face_data):
                 print(f"  Row {i+1}: {row}")
         else:

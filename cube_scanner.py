@@ -1,11 +1,9 @@
+import pickle
+import time
+from collections import Counter
+
 import cv2
 import numpy as np
-from collections import Counter
-import time
-import threading
-import pickle
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import StandardScaler
 
 
 class CubeScanner:
@@ -382,7 +380,7 @@ class CubeScanner:
                 else:
                     # Second SPACE press - confirm and move to next face
                     scanning = False
-                    print(f"➡️  Moving to next face...")
+                    print("➡️  Moving to next face...")
 
             elif key == ord("q"):
                 cap.release()

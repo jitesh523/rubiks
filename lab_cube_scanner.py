@@ -1,7 +1,8 @@
-import cv2
-import numpy as np
-import joblib
 import os
+
+import cv2
+import joblib
+import numpy as np
 
 
 class LABCubeScanner:

@@ -1,6 +1,7 @@
+from collections import Counter
+
 import cv2
 import numpy as np
-from collections import Counter
 
 
 class ColorDetector:

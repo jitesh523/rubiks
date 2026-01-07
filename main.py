@@ -11,8 +11,6 @@ A complete system that can:
 Author: AI Assistant
 """
 
-import sys
-import os
 from complete_cube_scanner import CompleteCubeScanner
 from enhanced_cube_solver import EnhancedCubeSolver
 from move_tracker import MoveTracker
@@ -146,7 +144,7 @@ def scan_and_solve_cube():
         print("❌ Failed to convert cube faces to solver format (unknown colors detected).")
         return False
 
-    print(f"\n🔍 Scanned cube state:")
+    print("\n🔍 Scanned cube state:")
     print(f"Raw data: {cube_string}")
 
     # Add detailed color count validation
@@ -177,7 +175,7 @@ def scan_and_solve_cube():
 
     # If we have invalid color counts, provide detailed feedback
     if invalid_counts:
-        print(f"\n❌ Invalid color distribution detected:")
+        print("\n❌ Invalid color distribution detected:")
         for color_name, color_code, count in invalid_counts:
             if count < 9:
                 missing = 9 - count

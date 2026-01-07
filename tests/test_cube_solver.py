@@ -1,6 +1,7 @@
 """Tests for the EnhancedCubeSolver class."""
 
 import pytest
+
 from enhanced_cube_solver import EnhancedCubeSolver
 
 
