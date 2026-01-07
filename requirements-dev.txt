@@ -1,0 +1,23 @@
+# Development Dependencies for Rubik's Cube Solver
+# Install with: pip install -r requirements-dev.txt
+
+# Testing
+pytest>=8.0.0
+pytest-cov>=4.1.0
+pytest-mock>=3.12.0
+
+# Code Formatting
+black>=24.0.0
+
+# Linting
+ruff>=0.1.0
+
+# Type Checking
+mypy>=1.8.0
+
+# Git Hooks
+pre-commit>=3.6.0
+
+# Documentation
+sphinx>=7.2.0
+sphinx-rtd-theme>=2.0.0

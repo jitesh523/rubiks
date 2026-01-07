@@ -1,9 +1,10 @@
 import kociemba
 
+
 class CubeSolver:
     def __init__(self):
         pass
-    
+
     def solve(self, cube_string):
         try:
             solution = kociemba.solve(cube_string)
