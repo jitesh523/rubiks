@@ -87,6 +87,31 @@ pytest -m unit
 pytest -m "not slow"
 ```
 
+**Testing ML Components:**
+```bash
+# Run ML detector tests specifically
+pytest tests/test_ml_color_detector.py -v
+
+# Check ML detector coverage
+pytest tests/test_ml_color_detector.py --cov=ml_color_detector --cov-report=term-missing
+
+# Run only fallback-related tests
+pytest tests/test_ml_color_detector.py -k "fallback" -v
+```
+
+**Manual Testing of ML Data Collector:**
+```bash
+# Test the interactive data collection tool
+python ml_data_collector.py
+
+# Expected behavior:
+# - Camera opens with crosshair
+# - Shows live ML predictions (if model exists)
+# - Allows labeling with keys 1-6
+# - Can save/load training data
+# - Can train model interactively
+```
+
 ### Pre-commit Hooks
 
 Pre-commit hooks automatically run before each commit:

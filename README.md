@@ -17,7 +17,7 @@ A complete AI-powered Rubik's Cube solver that uses computer vision to scan the 
 - 🔊 **Text-to-speech feedback** - Spoken instructions for each move
 - ✅ **Move validation** - Tracks your progress through the solution
 
-### 🚀 **Advanced Features** 
+### 🚀 **Advanced Features**
 - 🤖 **ML Color Detection** - Machine learning-based color recognition with 95%+ accuracy
 - ⚡ **Auto-Calibration** - Scan a solved cube once to train the ML model automatically
 - 🎯 **Confidence Scoring** - Smart fallback to traditional detection when confidence is low
@@ -53,13 +53,13 @@ A complete AI-powered Rubik's Cube solver that uses computer vision to scan the 
    ```
 
 3. **Run the application:**
-   
+
    We've included a helper script to set up the environment and run the app automatically:
-   
+
    ```bash
    ./start.sh
    ```
-   
+
    Or manually:
    ```bash
    source venv/bin/activate
@@ -67,17 +67,62 @@ A complete AI-powered Rubik's Cube solver that uses computer vision to scan the 
    ```
 
 4. **Optional: Auto-Calibrate ML Color Detection (Recommended)**
-   
+
    For best color detection accuracy, calibrate the ML model with your cube and lighting:
-   
+
    ```bash
    python auto_calibrator.py
    ```
-   
+
    - Have a **solved cube** ready
    - Follow on-screen instructions to scan each face
    - Model trains automatically in ~2 minutes
    - Enjoy 95%+ color detection accuracy!
+
+## 🤖 ML Color Detection
+
+Phase 2 of the project introduces advanced machine learning-based color detection with smart fallback mechanisms.
+
+### ✨ Features
+
+- **95%+ Accuracy**: KNN classifier trained on your specific cube and lighting conditions
+- **Auto-Calibration**: Quick 2-minute setup with a solved cube
+- **Smart Fallback**: Automatically uses HSV detection when ML confidence is low (<70%)
+- **Confidence Scoring**: Know when predictions are reliable
+- **9D Feature Extraction**: LAB + HSV + RGB ratios for robust classification
+- **Persistent Model**: Train once, use forever across sessions
+
+### 🚀 Quick Setup
+
+**Option 1: Auto-Calibration (Recommended)**
+```bash
+python auto_calibrator.py
+```
+Follow on-screen instructions to scan a solved cube. The model trains automatically!
+
+**Option 2: Manual Training (Advanced)**
+```bash
+python ml_data_collector.py
+```
+- Point camera at cube stickers
+- Press 1-6 to label each color
+- Collect 10+ samples per color
+- Press 't' to train model
+- Press 's' to save training data
+
+### 🔬 How It Works
+
+1. **Feature Extraction**: Converts RGB to 9 features (LAB color space, HSV, RGB ratios)
+2. **KNN Classification**: Uses k=5 neighbors with distance weighting
+3. **Confidence Scoring**: Returns probability of prediction
+4. **Smart Fallback**: Falls back to HSV if confidence < 70%
+5. **Model Persistence**: Saves to `ml_color_model.pkl`, `ml_color_scaler.pkl`
+
+### 🎯 Why ML vs HSV?
+
+- **HSV Detection**: Fast but lighting-dependent, struggles with red/orange
+- **ML Detection**: Learns your specific cube's colors, adapts to lighting
+- **Best of Both**: High confidence → ML, Low confidence → HSV fallback
 
 ## 🎮 How to Use
 
@@ -86,7 +131,7 @@ A complete AI-powered Rubik's Cube solver that uses computer vision to scan the 
 1. **Select option 1** from the main menu
 2. **Scan all 6 faces** in this order:
    - U (Up/White) - Top face
-   - R (Right/Red) - Right face  
+   - R (Right/Red) - Right face
    - F (Front/Green) - Front face
    - D (Down/Yellow) - Bottom face
    - L (Left/Orange) - Left face
@@ -131,7 +176,7 @@ Standard Rubik's cube colors:
 
 The solver uses standard Rubik's cube notation:
 - **R** = Right face clockwise
-- **R'** = Right face counter-clockwise  
+- **R'** = Right face counter-clockwise
 - **R2** = Right face 180 degrees
 - Same pattern for L, U, D, F, B faces
 
@@ -161,7 +206,7 @@ The system consists of 4 main modules:
 - Color-to-notation conversion
 - Cube state validation
 
-### 2. `cube_solver.py` - Algorithm Engine  
+### 2. `cube_solver.py` - Algorithm Engine
 - Kociemba algorithm integration
 - Solution optimization
 - Move parsing and explanation
@@ -176,7 +221,7 @@ The system consists of 4 main modules:
 
 ### 4. `main.py` - Application Controller
 - Menu system and user interface
-- Component orchestration  
+- Component orchestration
 - Error handling
 - Multiple input methods
 
@@ -210,7 +255,7 @@ Ideas for improvements:
 
 ### Dependencies:
 - **OpenCV**: Computer vision and camera handling
-- **NumPy**: Numerical computations and image processing  
+- **NumPy**: Numerical computations and image processing
 - **Kociemba**: Two-phase algorithm for cube solving
 - **pyttsx3**: Text-to-speech synthesis
 - **Threading**: Non-blocking audio playback

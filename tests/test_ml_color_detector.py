@@ -1,7 +1,8 @@
 """Tests for ML color detector."""
 
-import pytest
 import numpy as np
+import pytest
+
 from ml_color_detector import MLColorDetector
 
 
@@ -26,10 +27,7 @@ class TestMLColorDetector:
         for color_name, base_rgb in colors.items():
             for _ in range(20):
                 # Add slight variation
-                rgb = [
-                    max(0, min(255, base_rgb[i] + np.random.randint(-15, 15)))
-                    for i in range(3)
-                ]
+                rgb = [max(0, min(255, base_rgb[i] + np.random.randint(-15, 15))) for i in range(3)]
                 data.append({"rgb": rgb, "color": color_name})
 
         return data
@@ -72,7 +70,7 @@ class TestMLColorDetector:
             "blue": (30, 30, 200),
         }
 
-        for expected_color, rgb in test_cases.items():
+        for _expected_color, rgb in test_cases.items():
             predicted, confidence = detector.predict_color(rgb)
             # Most should be correct (allowing some variation)
             assert confidence > 0.5
@@ -136,3 +134,66 @@ class TestMLColorDetector:
 
         with pytest.raises(ValueError, match="empty"):
             detector.train([])
+
+    def test_predict_with_fallback_high_confidence(self, sample_training_data):
+        """Test that ML is used when confidence is high."""
+        detector = MLColorDetector(confidence_threshold=0.7)
+        detector.train(sample_training_data)
+
+        # Mock HSV detector that returns wrong color
+        def hsv_fallback(rgb):
+            return "wrong_color"
+
+        # Test with a clear white color
+        color, conf, used_ml = detector.predict_with_fallback(
+            (245, 245, 245), hsv_detector_func=hsv_fallback
+        )
+
+        # Should use ML since confidence should be high
+        assert used_ml is True
+        assert conf >= 0.7
+        assert color != "wrong_color"  # Should not use HSV fallback
+
+    def test_predict_with_fallback_low_confidence(self, sample_training_data):
+        """Test that HSV fallback is used when confidence is low."""
+        detector = MLColorDetector(confidence_threshold=0.99)  # Very high threshold
+        detector.train(sample_training_data)
+
+        # Mock HSV detector
+        def hsv_fallback(rgb):
+            return "hsv_color"
+
+        # Use an ambiguous/gray color
+        color, conf, used_ml = detector.predict_with_fallback(
+            (128, 128, 128), hsv_detector_func=hsv_fallback
+        )
+
+        # Should fall back to HSV if confidence < 0.99
+        if conf < 0.99:
+            assert used_ml is False
+            assert color == "hsv_color"
+        else:
+            # If confidence is high, ML should be used
+            assert used_ml is True
+
+    def test_predict_with_fallback_no_model_no_hsv(self):
+        """Test fallback behavior when model not trained and no HSV detector."""
+        detector = MLColorDetector(confidence_threshold=0.7)
+
+        with pytest.raises(RuntimeError, match="not trained"):
+            detector.predict_with_fallback((255, 0, 0), hsv_detector_func=None)
+
+    def test_predict_with_fallback_no_model_with_hsv(self):
+        """Test fallback uses HSV when model not trained but HSV provided."""
+        detector = MLColorDetector(confidence_threshold=0.7)
+
+        def hsv_fallback(rgb):
+            return "red"
+
+        color, conf, used_ml = detector.predict_with_fallback(
+            (200, 30, 30), hsv_detector_func=hsv_fallback
+        )
+
+        assert color == "red"
+        assert conf == 0.5  # Default confidence when using fallback
+        assert used_ml is False
