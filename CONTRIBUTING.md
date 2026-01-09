@@ -112,6 +112,27 @@ python ml_data_collector.py
 # - Can train model interactively
 ```
 
+**Testing the API:**
+```bash
+# Run API tests
+pytest tests/test_api.py -v
+
+# Check API coverage
+pytest tests/test_api.py --cov=api --cov-report=term-missing
+
+# Start development server
+uvicorn api.main:app --reload
+
+# Manual testing with curl
+curl http://localhost:8000/health
+curl -X POST http://localhost:8000/api/v1/solver/solve-string \
+  -H "Content-Type: application/json" \
+  -d '{"cube_string": "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"}'
+
+# Interactive API testing
+# Open http://localhost:8000/docs in browser
+```
+
 ### Pre-commit Hooks
 
 Pre-commit hooks automatically run before each commit:

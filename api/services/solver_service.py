@@ -10,8 +10,9 @@ from pathlib import Path
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
+from typing import Any
+
 from enhanced_cube_solver import EnhancedCubeSolver
-from typing import Dict, List, Any
 
 
 class SolverService:
@@ -20,7 +21,7 @@ class SolverService:
     def __init__(self):
         self.solver = EnhancedCubeSolver()
 
-    async def solve_cube_string(self, cube_string: str) -> Dict[str, Any]:
+    async def solve_cube_string(self, cube_string: str) -> dict[str, Any]:
         """Solve cube from string notation"""
         try:
             success, result = self.solver.solve_cube(cube_string)
@@ -37,8 +38,8 @@ class SolverService:
             return {"success": False, "solution": None, "error": str(e)}
 
     async def solve_cube_faces(
-        self, faces: List[List[List[str]]], use_ml: bool = False
-    ) -> Dict[str, Any]:
+        self, faces: list[list[list[str]]], use_ml: bool = False
+    ) -> dict[str, Any]:
         """Solve cube from face arrays"""
         try:
             # For now, just use the solver's existing functionality

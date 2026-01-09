@@ -5,6 +5,7 @@ Endpoints for ML color detection model management.
 """
 
 from fastapi import APIRouter, HTTPException
+
 from api.models.requests import ColorPredictionRequest, TrainModelRequest
 from api.models.responses import (
     ColorPredictionResponse,
@@ -47,9 +48,7 @@ async def predict_color(request: ColorPredictionRequest):
 async def train_model(request: TrainModelRequest):
     """Train ML model with provided training data"""
     try:
-        result = await ml_service.train_model(
-            request.training_data, request.confidence_threshold
-        )
+        result = await ml_service.train_model(request.training_data, request.confidence_threshold)
 
         return TrainModelResponse(
             success=True,

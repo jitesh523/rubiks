@@ -4,16 +4,17 @@ FastAPI application for Rubik's Cube Solver
 REST API providing cube solving, ML color detection, and camera streaming.
 """
 
+import sys
+from datetime import datetime
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from datetime import datetime
-import sys
-from pathlib import Path
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from api.routes import solver, ml_model
+from api.routes import ml_model, solver
 
 # Create FastAPI application
 app = FastAPI(

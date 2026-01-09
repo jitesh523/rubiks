@@ -124,6 +124,62 @@ python ml_data_collector.py
 - **ML Detection**: Learns your specific cube's colors, adapts to lighting
 - **Best of Both**: High confidence → ML, Low confidence → HSV fallback
 
+## 🌐 Web API
+
+The Rubik's Cube Solver includes a REST API for web and mobile integrations!
+
+### Quick Start
+
+**Start the API server**:
+```bash
+uvicorn api.main:app --reload
+```
+
+Server runs at: **http://localhost:8000**
+
+### API Documentation
+
+- **Swagger UI**: http://localhost:8000/docs (interactive testing)
+- **ReDoc**: http://localhost:8000/redoc (clean documentation)  
+- **OpenAPI JSON**: http://localhost:8000/openapi.json
+
+### Example Usage
+
+**Solve a Cube**:
+```bash
+curl -X POST "http://localhost:8000/api/v1/solver/solve-string" \
+  -H "Content-Type: application/json" \
+  -d '{"cube_string": "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"}'
+```
+
+**Check ML Model**:
+```bash
+curl "http://localhost:8000/api/v1/ml/info"
+```
+
+**Predict Color**:
+```bash
+curl -X POST "http://localhost:8000/api/v1/ml/predict" \
+  -H "Content-Type: application/json" \
+  -d '{"rgb": [200, 30, 30]}'
+```
+
+### Available Endpoints
+
+**Solver Endpoints**:
+- `POST /api/v1/solver/solve-string` - Solve from 54-char string
+- `POST /api/v1/solver/solve-faces` - Solve from face arrays
+- `GET /api/v1/solver/explain-move/{move}` - Get move explanation
+
+**ML Model Endpoints**:
+- `GET /api/v1/ml/info` - Get model status
+- `POST /api/v1/ml/predict` - Predict color from RGB
+- `POST /api/v1/ml/train` - Train model
+
+**System Endpoints**:
+- `GET /` - API info
+- `GET /health` - Health check
+
 ## 🎮 How to Use
 
 ### Option 1: Full Camera Experience (Recommended)

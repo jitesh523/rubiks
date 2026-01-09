@@ -6,7 +6,7 @@ Business logic for ML color detection operations.
 
 import sys
 from pathlib import Path
-from typing import Dict, List, Tuple, Any, Optional
+from typing import Any
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -32,7 +32,7 @@ class MLService:
         """Check if ML model is trained and ready"""
         return self.detector.is_trained
 
-    def get_model_info(self) -> Dict[str, Any]:
+    def get_model_info(self) -> dict[str, Any]:
         """Get model information"""
         if self.detector.is_trained:
             metadata = self.detector.model_metadata
@@ -52,7 +52,7 @@ class MLService:
                 "metadata": {},
             }
 
-    async def predict_color(self, rgb: Tuple[int, int, int]) -> Dict[str, Any]:
+    async def predict_color(self, rgb: tuple[int, int, int]) -> dict[str, Any]:
         """Predict color with ML"""
         if not self.detector.is_trained:
             return {
@@ -79,8 +79,8 @@ class MLService:
             }
 
     async def train_model(
-        self, training_data: List[dict], confidence_threshold: float = 0.7
-    ) -> Dict[str, Any]:
+        self, training_data: list[dict], confidence_threshold: float = 0.7
+    ) -> dict[str, Any]:
         """Train ML model"""
         try:
             self.detector.confidence_threshold = confidence_threshold
