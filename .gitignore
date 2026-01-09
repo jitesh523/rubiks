@@ -75,3 +75,6 @@ calibration_*.json
 # Project specific
 test_images/
 calibration_images/
+.coverage
+ml_color_metadata.json
+htmlcov/
