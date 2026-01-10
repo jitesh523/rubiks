@@ -1,0 +1,66 @@
+.color-picker {
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    position: absolute;
+    z-index: var(--z-dropdown);
+    min-width: 200px;
+    box-shadow: var(--shadow-xl);
+}
+
+.color-picker.bottom {
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.color-picker.top {
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.color-swatches {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.color-swatch {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
+}
+
+.color-swatch.selected {
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+}
+
+.color-swatch .checkmark {
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+}
+
+.color-picker-hint {
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--color-border);
+}

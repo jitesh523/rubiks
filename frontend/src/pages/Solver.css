@@ -1,0 +1,175 @@
+.solver-layout {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.solved-message {
+    text-align: center;
+    padding: var(--spacing-3xl);
+    border-radius: var(--radius-xl);
+    max-width: 500px;
+    margin: var(--spacing-3xl) auto;
+}
+
+.solved-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.solved-message h2 {
+    margin-bottom: var(--spacing-md);
+}
+
+.progress-section {
+    margin-bottom: var(--spacing-2xl);
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+.progress-text {
+    font-weight: 600;
+    color: var(--color-accent-primary);
+}
+
+.progress-bar {
+    height: 8px;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary));
+    transition: width var(--transition-base);
+    border-radius: var(--radius-full);
+}
+
+.current-step-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.solver-controls {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-bottom: var(--spacing-2xl);
+    flex-wrap: wrap;
+}
+
+.all-steps-section {
+    margin-bottom: var(--spacing-2xl);
+}
+
+.all-steps-section h3 {
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.all-steps-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    justify-content: center;
+}
+
+.step-bubble {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+    min-width: 70px;
+}
+
+.step-bubble:hover {
+    background: var(--color-bg-tertiary);
+    transform: translateY(-2px);
+}
+
+.step-bubble.active {
+    background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+    border-color: transparent;
+    color: white;
+    box-shadow: var(--shadow-glow);
+}
+
+.step-bubble.completed {
+    background: var(--color-accent-success);
+    border-color: transparent;
+    color: white;
+}
+
+.step-bubble-number {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+.step-bubble-move {
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+}
+
+.cube-state-section {
+    margin-top: var(--spacing-3xl);
+    padding-top: var(--spacing-2xl);
+    border-top: 1px solid var(--color-border);
+}
+
+.cube-state-section h3 {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.cube-state-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xl);
+}
+
+.state-face {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.state-face-label {
+    font-weight: 600;
+    color: var(--color-accent-primary);
+}
+
+.solver-footer {
+    text-align: center;
+    margin-top: var(--spacing-3xl);
+    padding-top: var(--spacing-2xl);
+    border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 768px) {
+    .solver-controls {
+        flex-direction: column;
+    }
+
+    .cube-state-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .cube-state-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

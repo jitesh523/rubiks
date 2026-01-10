@@ -1,0 +1,75 @@
+.cube-face-container {
+    position: relative;
+    display: inline-block;
+}
+
+.cube-face-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    background: var(--color-bg-tertiary);
+    padding: 12px;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-border);
+}
+
+.cube-sticker {
+    aspect-ratio: 1;
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-sm);
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    box-shadow:
+        inset 0 2px 4px rgba(255, 255, 255, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.cube-sticker.interactive {
+    cursor: pointer;
+}
+
+.cube-sticker.interactive:hover {
+    transform: scale(1.05);
+    box-shadow:
+        inset 0 2px 4px rgba(255, 255, 255, 0.4),
+        0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.cube-sticker.selected {
+    transform: scale(1.1);
+    border-color: var(--color-accent-primary);
+    box-shadow:
+        inset 0 2px 4px rgba(255, 255, 255, 0.4),
+        0 0 0 3px rgba(99, 102, 241, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.4);
+    z-index: var(--z-dropdown);
+}
+
+.cube-sticker.center {
+    opacity: 0.95;
+}
+
+.cube-sticker.readonly {
+    cursor: default;
+}
+
+@media (max-width: 768px) {
+    .cube-sticker {
+        width: 50px;
+        height: 50px;
+    }
+
+    .cube-face-grid {
+        gap: 4px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cube-sticker {
+        width: 40px;
+        height: 40px;
+    }
+}

@@ -1,0 +1,10 @@
+/* Home page styles - most are in App.css */
+/* Component-specific overrides */
+
+.hero {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.features {
+    animation: fadeIn 1s ease-out 0.3s backwards;
+}
