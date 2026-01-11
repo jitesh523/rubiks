@@ -8,27 +8,33 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+# Load environment variables
+load_dotenv()
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from api.routes import ml_model, solver
+# Import config and routes after path setup
+from api.config import settings  # noqa: E402
+from api.routes import ml_model, solver  # noqa: E402
 
 # Create FastAPI application
 app = FastAPI(
-    title="Rubik's Cube Solver API",
+    title=settings.app_name,
     description="AI-powered Rubik's Cube solver with ML color detection",
-    version="2.0.0",
+    version=settings.app_version,
     docs_url="/docs",
     redoc_url="/redoc",
 )
 
-# CORS middleware
+# CORS middleware with environment-based origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
+    allow_origins=settings.cors_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -66,4 +72,9 @@ async def health_check():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(
+        app,
+        host=settings.api_host,
+        port=settings.api_port,
+        reload=settings.api_reload,
+    )

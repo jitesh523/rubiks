@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+docs/
+*.md
+README.md
+CONTRIBUTING.md
+LICENSE
+
+# Test files
+tests/
+test_*.py
+*_test.py
+
+# Cube scan data (optional - include if you want to preserve)
+cube_scan_*.json
+
+# Development files
+.pre-commit-config.yaml
+pyproject.toml
+
+# Node modules (if any stray files)
+node_modules/
+frontend/
+
+# Temporary files
+*.log
+*.tmp
+tmp/
+temp/
