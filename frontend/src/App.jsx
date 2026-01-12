@@ -9,6 +9,7 @@ import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import Scanner from './pages/Scanner';
 import Solver from './pages/Solver';
+import GuidedSolver from './pages/GuidedSolver';
 import About from './pages/About';
 import './App.css';
 
@@ -22,6 +23,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/scanner" element={<Scanner />} />
             <Route path="/solver" element={<Solver />} />
+            <Route path="/guided" element={<GuidedSolver />} />
             <Route path="/about" element={<About />} />
           </Routes>
         </main>

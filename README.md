@@ -18,6 +18,11 @@ A complete AI-powered Rubik's Cube solver that uses computer vision to scan the 
 - ✅ **Move validation** - Tracks your progress through the solution
 
 ### 🚀 **Advanced Features**
+- 🎯 **Real-Time Guided Solver** - Live camera-based solving with step-by-step validation!
+  - 📹 **Continuous camera feed** - Real-time cube state detection
+  - ✅ **Move validation** - Automatically checks if you performed the move correctly
+  - 🎲 **3D visualization** - Interactive Three.js cube showing moves
+  - 🔄 **WebSocket communication** - Ultra-low latency real-time updates
 - 🤖 **ML Color Detection** - Machine learning-based color recognition with 95%+ accuracy
 - ⚡ **Auto-Calibration** - Scan a solved cube once to train the ML model automatically
 - 🎯 **Confidence Scoring** - Smart fallback to traditional detection when confidence is low
@@ -140,7 +145,7 @@ Server runs at: **http://localhost:8000**
 ### API Documentation
 
 - **Swagger UI**: http://localhost:8000/docs (interactive testing)
-- **ReDoc**: http://localhost:8000/redoc (clean documentation)  
+- **ReDoc**: http://localhost:8000/redoc (clean documentation)
 - **OpenAPI JSON**: http://localhost:8000/openapi.json
 
 ### Example Usage
@@ -179,6 +184,66 @@ curl -X POST "http://localhost:8000/api/v1/ml/predict" \
 **System Endpoints**:
 - `GET /` - API info
 - `GET /health` - Health check
+
+**Guided Solver Endpoints** (WebSocket):
+- `POST /api/v1/guided/create-session` - Create new solving session
+- `GET /api/v1/guided/session/{session_id}` - Get session state
+- `DELETE /api/v1/guided/session/{session_id}` - Delete session
+- `WebSocket /api/v1/guided/ws/{session_id}` - Real-time guided solving
+
+### WebSocket Protocol
+
+The guided solver uses WebSocket for real-time communication:
+
+**Client → Server Messages**:
+```json
+{"type": "process_frame", "frame_data": "base64...", "grid_region": {...}}
+{"type": "confirm_face", "face_colors": [[...]]}
+{"type": "validate_move", "current_face_state": [[...]]}
+{"type": "get_instruction"}
+{"type": "ping"}
+```
+
+**Server → Client Messages**:
+```json
+{"type": "detection_result", "data": {...}}
+{"type": "face_confirmed", "data": {...}}
+{"type": "move_validated", "data": {...}}
+{"type": "instruction", "data": {...}}
+{"type": "error", "error": "..."}
+{"type": "pong"}
+```
+
+## 🌐 React Frontend
+
+The project includes a modern React-based web interface!
+
+### Quick Start
+
+**Start frontend development server**:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend runs at: **http://localhost:5173**
+
+### Features
+
+- 🎯 **Manual Scanner** - Color picker interface for cube input
+- 🤖 **Guided Solver** - Real-time camera-based solving with validation
+- 🎲 **3D Visualization** - Interactive Three.js cube models
+- 📱 **Responsive Design** - Works on desktop and mobile
+- 🎨 **Modern UI** - Glassmorphism design with smooth animations
+
+### Pages
+
+- **Home** - Welcome page with features overview
+- **Scanner** - Manual cube input with color picker
+- **Guided Solver** - Real-time camera-based guided solving
+- **Solver** - Solution playback with step-by-step instructions
+- **About** - Project information and documentation
 
 ## 🎮 How to Use
 

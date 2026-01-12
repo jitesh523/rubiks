@@ -1,0 +1,29 @@
+.camera-feed {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: #000;
+}
+
+.camera-video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.camera-feed-error {
+    padding: var(--spacing-xl);
+    text-align: center;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+}
+
+.error-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+}

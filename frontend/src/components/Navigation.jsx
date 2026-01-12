@@ -51,6 +51,13 @@ function Navigation() {
                         Scanner
                     </Link>
                     <Link
+                        to="/guided"
+                        className={`nav-link ${isActive('/guided') ? 'active' : ''}`}
+                        onClick={closeMenu}
+                    >
+                        Guided Solver
+                    </Link>
+                    <Link
                         to="/solver"
                         className={`nav-link ${isActive('/solver') ? 'active' : ''}`}
                         onClick={closeMenu}

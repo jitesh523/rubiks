@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Import config and routes after path setup
 from api.config import settings  # noqa: E402
-from api.routes import ml_model, solver  # noqa: E402
+from api.routes import guided_solver, ml_model, solver  # noqa: E402
 
 # Create FastAPI application
 app = FastAPI(
@@ -43,6 +43,7 @@ app.add_middleware(
 # Include routers
 app.include_router(solver.router, prefix="/api/v1/solver", tags=["Solver"])
 app.include_router(ml_model.router, prefix="/api/v1/ml", tags=["ML Model"])
+app.include_router(guided_solver.router, prefix="/api/v1/guided", tags=["Guided Solver"])
 
 
 @app.get("/", tags=["Root"])

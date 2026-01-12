@@ -1,0 +1,100 @@
+.move-validator {
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 2px solid var(--glass-border);
+    margin: var(--spacing-md) 0;
+    transition: all 0.3s ease;
+}
+
+.move-validator.valid {
+    border-color: var(--success-color);
+    background: linear-gradient(135deg, rgba(46, 213, 115, 0.1) 0%, var(--glass-bg) 100%);
+}
+
+.move-validator.invalid {
+    border-color: var(--error-color);
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, var(--glass-bg) 100%);
+}
+
+.validator-content {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+}
+
+.validator-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.move-validator.valid .validator-icon {
+    color: var(--success-color);
+}
+
+.move-validator.invalid .validator-icon {
+    color: var(--error-color);
+}
+
+.validator-details {
+    flex: 1;
+}
+
+.current-move {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.1rem;
+}
+
+.move-label {
+    color: var(--text-secondary);
+}
+
+.move-notation {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.validator-message {
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.confidence-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.confidence-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    min-width: 80px;
+}
+
+.confidence-progress {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.confidence-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    transition: width 0.3s ease;
+}
+
+.confidence-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 50px;
+    text-align: right;
+}
